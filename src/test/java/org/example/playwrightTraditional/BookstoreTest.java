@@ -197,4 +197,61 @@ public class BookstoreTest {
         page.getByText("Proceed as Guest").click();
         page.waitForLoadState();
     }
+
+    @Test
+    @DisplayName("TestCase Contact Information Page")
+    void testContactInformation() {
+        // Add item to cart and navigate to checkout
+        page.navigate("https://depaul.bncollege.com/");
+        page.locator("#bned_site_search").fill("earbuds");
+        page.locator("#bned_site_search").press("Enter");
+        page.locator("[data-target='#facet-brand']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='JBL'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-Color']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Black'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-price']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Over $50'])").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("JBL Quantum True Wireless Noise Cancelling Gaming").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("Add to Cart").click();
+        page.waitForTimeout(3000);
+        page.locator("a.js-mini-cart-link").first().click();
+        page.waitForLoadState();
+        page.getByText("FAST In-Store Pickup").click();
+        page.waitForTimeout(2000);
+        page.locator("input[name='voucherCode']").fill("TEST");
+        page.locator("#js-voucher-apply-btn").click();
+        page.waitForTimeout(2000);
+        page.locator("[aria-label='Proceed To Checkout']").first().click();
+        page.waitForLoadState();
+        page.getByText("Proceed as Guest").click();
+        page.waitForLoadState();
+
+        // Assert we are on Contact Information page
+        assertThat(page.locator("body")).containsText("Contact Information");
+
+        // Enter contact details
+        page.locator("input[name='firstName']").fill("John");
+        page.locator("input[name='lastName']").fill("Doe");
+        page.locator("input[name='emailAddress']").fill("johndoe@test.com");
+        page.locator("input[name='phoneNumberHidden']").fill("3125551234");
+
+        // Assert sidebar totals
+        assertThat(page.locator("body")).containsText("164.98");
+        assertThat(page.locator("body")).containsText("3.00");
+        assertThat(page.locator("body")).containsText("TBD");
+        assertThat(page.locator("body")).containsText("167.98");
+
+        // Click Continue
+        page.getByText("Continue").first().click();
+        page.waitForLoadState();
+    }
 }
