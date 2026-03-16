@@ -104,7 +104,7 @@ public class BookstoreTest {
         page.locator("#bned_site_search").fill("earbuds");
         page.locator("#bned_site_search").press("Enter");
         page.locator("[data-target='#facet-brand']").click();
-        page.waitForTimeout(1000);
+        page.waitForTimeout(2000);
         page.locator("label:has(input[alt='JBL'])").first().click();
         page.waitForLoadState();
         page.locator("[data-target='#facet-Color']").click();
@@ -206,7 +206,7 @@ public class BookstoreTest {
         page.locator("#bned_site_search").fill("earbuds");
         page.locator("#bned_site_search").press("Enter");
         page.locator("[data-target='#facet-brand']").click();
-        page.waitForTimeout(1000);
+        page.waitForTimeout(2000);
         page.locator("label:has(input[alt='JBL'])").first().click();
         page.waitForLoadState();
         page.locator("[data-target='#facet-Color']").click();
@@ -387,5 +387,45 @@ public class BookstoreTest {
         // Click Back to Cart
         page.locator("a[href='/cart']").first().click();
         page.waitForLoadState();
+    }
+
+    @Test
+    @DisplayName("TestCase Your Shopping Cart")
+    void testEmptyCart() {
+        // Add item to cart and navigate to cart
+        page.navigate("https://depaul.bncollege.com/");
+        page.locator("#bned_site_search").fill("earbuds");
+        page.locator("#bned_site_search").press("Enter");
+        page.locator("[data-target='#facet-brand']").click();
+        page.waitForTimeout(2000);
+        page.locator("label:has(input[alt='JBL'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-Color']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Black'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-price']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Over $50'])").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("JBL Quantum True Wireless Noise Cancelling Gaming").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("Add to Cart").click();
+        page.waitForTimeout(3000);
+        page.locator("a.js-mini-cart-link").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(2000);
+
+        // Delete product from cart
+        page.locator("button.js-bned-icon-delete").first().click();
+        page.waitForTimeout(2000);
+
+        // Assert cart is empty
+        assertThat(page.locator("body")).containsText("Your cart is empty");
+
+        // Close window
+        page.close();
     }
 }
