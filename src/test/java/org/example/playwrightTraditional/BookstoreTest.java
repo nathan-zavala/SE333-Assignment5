@@ -254,4 +254,76 @@ public class BookstoreTest {
         page.getByText("Continue").first().click();
         page.waitForLoadState();
     }
+
+    @Test
+    @DisplayName("TestCase Pickup Information")
+    void testPickupInformation() {
+        // Add item to cart and navigate to pickup information page
+        page.navigate("https://depaul.bncollege.com/");
+        page.locator("#bned_site_search").fill("earbuds");
+        page.locator("#bned_site_search").press("Enter");
+        page.locator("[data-target='#facet-brand']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='JBL'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-Color']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Black'])").first().click();
+        page.waitForLoadState();
+        page.locator("[data-target='#facet-price']").click();
+        page.waitForTimeout(1000);
+        page.locator("label:has(input[alt='Over $50'])").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("JBL Quantum True Wireless Noise Cancelling Gaming").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(1000);
+        page.getByText("Add to Cart").click();
+        page.waitForTimeout(3000);
+        page.locator("a.js-mini-cart-link").first().click();
+        page.waitForLoadState();
+        page.getByText("FAST In-Store Pickup").click();
+        page.waitForTimeout(2000);
+        page.locator("input[name='voucherCode']").fill("TEST");
+        page.locator("#js-voucher-apply-btn").click();
+        page.waitForTimeout(2000);
+        page.locator("[aria-label='Proceed To Checkout']").first().click();
+        page.waitForLoadState();
+        page.getByText("Proceed as Guest").click();
+        page.waitForLoadState();
+        page.locator("input[name='firstName']").fill("John");
+        page.locator("input[name='lastName']").fill("Doe");
+        page.locator("input[name='emailAddress']").fill("johndoe@test.com");
+        page.locator("input[name='phoneNumberHidden']").fill("3125551234");
+        page.getByText("Continue").first().click();
+        page.waitForLoadState();
+        page.waitForTimeout(2000);
+
+        // Assert contact information
+        assertThat(page.locator("body")).containsText("John");
+        assertThat(page.locator("body")).containsText("Doe");
+        assertThat(page.locator("body")).containsText("johndoe@test.com");
+        assertThat(page.locator("body")).containsText("3125551234");
+
+        // Assert pickup location
+        assertThat(page.locator("body")).containsText("DePaul University Loop Campus & SAIC");
+
+        // Assert pickup person
+        assertThat(page.locator("body")).containsText("I'll pick them up");
+
+        // Assert sidebar totals
+        assertThat(page.locator("body")).containsText("164.98");
+        assertThat(page.locator("body")).containsText("3.00");
+        assertThat(page.locator("body")).containsText("TBD");
+        assertThat(page.locator("body")).containsText("167.98");
+
+        // Assert pickup item and price
+        assertThat(page.locator("body")).containsText("JBL Quantum True Wireless Noise Cancelling Gaming Earbuds- Black");
+        assertThat(page.locator("body")).containsText("164.98");
+
+        // Click Continue
+        // Click Continue
+        page.locator("button.btn-primary").last().click();
+        page.waitForLoadState();
+    }
 }
