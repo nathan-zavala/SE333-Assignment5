@@ -27,6 +27,9 @@ jobs:
           name: checkstyle-report
           path: target/checkstyle-result.xml
 
+      - name: Install Playwright Browsers
+        run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps chromium" -f pom.xml
+
       - name: Run Maven Test
         run: mvn test -f pom.xml
 
